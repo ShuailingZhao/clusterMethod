@@ -1,12 +1,11 @@
 #include <stdio.h>
 #include <iostream>
-#include <ctime>
-#include "dbscan.h"
+ #include<ctime>
 #include "opencv2/opencv.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/core/core.hpp"
-
+#include "meanShift.h"
 cv::Scalar getColor(const int clusterID)
 {
 	cv::Scalar clusterColor[20]={
@@ -129,15 +128,17 @@ std::vector<PointWithC> getRowPoints(const cv::Mat ipm_mask)
 	return points;
 }
 
+
 std::vector<std::vector<cv::Point2d>> getCluster(const cv::Mat lane_mask)
 {
-	unsigned int MINIMUM_POINTS = 10;     // minimum number of cluster
-	float EPSILON = 15.0;  // distance for clustering, metre^2
+	int bandwidth = 5;     // minimum number of cluster
 	std::vector<PointWithC> points = getRowPoints(lane_mask);
-	DBSCAN ds(MINIMUM_POINTS, EPSILON, points);
-	std::vector<std::vector<cv::Point2d>> result = ds.getCluster();
+	cv::Mat laneDebug(lane_mask.rows,lane_mask.cols, CV_8UC3, cv::Scalar(255,255,255));
+	MeanShiftClass mS(points, bandwidth, laneDebug);
+	std::vector<std::vector<cv::Point2d>> result = mS.getCluster();
 	return result;
 }
+
 void getParserInfo(std::string& fileName, int argc, char** argv)
 {
 	cv::CommandLineParser parser(argc, argv, "{help||}{testImg|../data/39-1001150009181229150644600.png|Test image instance segmentation}");
@@ -146,7 +147,7 @@ void getParserInfo(std::string& fileName, int argc, char** argv)
 
 const char * usage =
 "\n"
-"./testDbScanImage -testImg=../data/39-1001150009181229150644600.png"
+"./testMeanShiftImage -testImg=../data/39-1001150009181229150644600.png"
 "\n";
 
 static void help()
@@ -156,19 +157,20 @@ static void help()
 
 int main(int argc, char** argv)
 {
+	cv::Size resize(512, 270);
 	if(argc<2)
 	{
 		help();
 		return 0;
 	}
-
+	
 	clock_t startTime,endTime;
 	std::string fileName;
 	getParserInfo(fileName, argc, argv);
 	cv::Mat lane_mask = cv::imread(fileName, 0);
-	cv::resize(lane_mask, lane_mask, cv::Size(512, 270));
+	cv::resize(lane_mask, lane_mask, resize);
 	cv::Mat beforeCluster= lane_mask.clone();
-	cv::imshow("beforeCluster", beforeCluster);
+	cv::imshow("beforeMeanShiftCluster", beforeCluster);
 	startTime = clock();//计时开始
 	std::vector<std::vector<cv::Point2d>> result = getCluster(lane_mask);
 	endTime = clock();//计时结束
@@ -176,7 +178,7 @@ int main(int argc, char** argv)
 //	cv::Mat afterCluster = lane_mask.clone();
 	cv::Mat afterCluster(lane_mask.rows,lane_mask.cols, CV_8UC3, cv::Scalar(255,255,255));
 	showPointWithCSet(afterCluster, result);
-	cv::imshow("afterCluster", afterCluster);
+	cv::imshow("afterMeanShiftCluster", afterCluster);
 	
 	cv::waitKey(0);  
 

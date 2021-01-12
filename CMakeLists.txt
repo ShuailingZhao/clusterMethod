@@ -25,3 +25,15 @@ target_link_libraries(testDbScan ${OpenCV_LIBS})
 file(GLOB src_testDbScanImage_files ${MODULE_SRC_ROOT}/testDbScanImage.cpp ${MODULE_SRC_ROOT}/dbscan.cpp)
 add_executable(testDbScanImage ${src_testDbScanImage_files})
 target_link_libraries(testDbScanImage ${OpenCV_LIBS})
+
+file(GLOB src_testKMeansImage_files ${MODULE_SRC_ROOT}/testKMeansImage.cpp ${MODULE_SRC_ROOT}/kMeans.cpp)
+add_executable(testKMeansImage ${src_testKMeansImage_files})
+target_link_libraries(testKMeansImage ${OpenCV_LIBS})
+
+file(GLOB src_testGMMImage_files ${MODULE_SRC_ROOT}/testGMMImage.cpp ${MODULE_SRC_ROOT}/gMM.cpp)
+add_executable(testGMMImage ${src_testGMMImage_files})
+target_link_libraries(testGMMImage ${OpenCV_LIBS})
+
+file(GLOB src_testMeanShiftImage_files ${MODULE_SRC_ROOT}/testMeanShiftImage.cpp ${MODULE_SRC_ROOT}/meanShift.cpp)
+add_executable(testMeanShiftImage ${src_testMeanShiftImage_files})
+target_link_libraries(testMeanShiftImage ${OpenCV_LIBS})

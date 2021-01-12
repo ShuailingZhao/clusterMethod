@@ -1,12 +1,11 @@
 #include <stdio.h>
 #include <iostream>
-#include <ctime>
-#include "dbscan.h"
+ #include<ctime>
 #include "opencv2/opencv.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/core/core.hpp"
-
+#include "kMeans.h"
 cv::Scalar getColor(const int clusterID)
 {
 	cv::Scalar clusterColor[20]={
@@ -129,15 +128,16 @@ std::vector<PointWithC> getRowPoints(const cv::Mat ipm_mask)
 	return points;
 }
 
+
 std::vector<std::vector<cv::Point2d>> getCluster(const cv::Mat lane_mask)
 {
-	unsigned int MINIMUM_POINTS = 10;     // minimum number of cluster
-	float EPSILON = 15.0;  // distance for clustering, metre^2
+	unsigned int clusterNum = 3;     // minimum number of cluster
 	std::vector<PointWithC> points = getRowPoints(lane_mask);
-	DBSCAN ds(MINIMUM_POINTS, EPSILON, points);
-	std::vector<std::vector<cv::Point2d>> result = ds.getCluster();
+	kMeans kM(clusterNum, points);
+	std::vector<std::vector<cv::Point2d>> result = kM.getCluster();
 	return result;
 }
+
 void getParserInfo(std::string& fileName, int argc, char** argv)
 {
 	cv::CommandLineParser parser(argc, argv, "{help||}{testImg|../data/39-1001150009181229150644600.png|Test image instance segmentation}");
@@ -146,7 +146,7 @@ void getParserInfo(std::string& fileName, int argc, char** argv)
 
 const char * usage =
 "\n"
-"./testDbScanImage -testImg=../data/39-1001150009181229150644600.png"
+"./testKMeansImage -testImg=../data/39-1001150009181229150644600.png"
 "\n";
 
 static void help()
@@ -156,17 +156,18 @@ static void help()
 
 int main(int argc, char** argv)
 {
+	cv::Size resize(512, 270);
 	if(argc<2)
 	{
 		help();
 		return 0;
 	}
-
+	
 	clock_t startTime,endTime;
 	std::string fileName;
 	getParserInfo(fileName, argc, argv);
 	cv::Mat lane_mask = cv::imread(fileName, 0);
-	cv::resize(lane_mask, lane_mask, cv::Size(512, 270));
+	cv::resize(lane_mask, lane_mask, resize);
 	cv::Mat beforeCluster= lane_mask.clone();
 	cv::imshow("beforeCluster", beforeCluster);
 	startTime = clock();//计时开始

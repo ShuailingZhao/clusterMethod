@@ -1,3 +1,4 @@
+#include <ctime>
 #include "dbscan.h"
 
 DBSCAN::DBSCAN(unsigned int minPts, float eps, std::vector<PointWithC> points)
@@ -39,7 +40,6 @@ int DBSCAN::getClusterIndex(const std::vector<int> clusterIndexSet, int curPoint
 }
 std::vector<std::vector<cv::Point2d>> DBSCAN::getCluster()
 {
-	
 	std::vector<PointWithC> pointsWithC = run();
 	std::vector<std::vector<cv::Point2d>> reCluster;
 	std::vector<int> clusterIndexSet;
