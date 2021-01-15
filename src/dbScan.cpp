@@ -1,5 +1,4 @@
-#include <ctime>
-#include "dbscan.h"
+#include "dbScan.h"
 
 DBSCAN::DBSCAN(unsigned int minPts, float eps, std::vector<PointWithC> points)
 {
@@ -13,6 +12,7 @@ std::vector<PointWithC> DBSCAN::run()
 {
 	int clusterID = 1;
 	std::vector<PointWithC>::iterator iter;
+	int count=0;
 	for(iter = m_points.begin(); iter != m_points.end(); ++iter)
 	{
 		if ( iter->clusterID == UNCLASSIFIED )
@@ -22,6 +22,7 @@ std::vector<PointWithC> DBSCAN::run()
 				clusterID += 1;
 			}
 		}
+		count++;
 	}
 
 	return m_points;

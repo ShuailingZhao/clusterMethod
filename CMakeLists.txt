@@ -18,13 +18,17 @@ include_directories(${PROJECT_ROOT}/include)
 set(MODULE_SRC_ROOT ${PROJECT_ROOT}/src/)
 
 
-file(GLOB src_testDbScan_files ${MODULE_SRC_ROOT}/testDbScan.cpp ${MODULE_SRC_ROOT}/dbscan.cpp)
+file(GLOB src_testDbScan_files ${MODULE_SRC_ROOT}/testDbScan.cpp ${MODULE_SRC_ROOT}/dbScan.cpp)
 add_executable(testDbScan ${src_testDbScan_files})
 target_link_libraries(testDbScan ${OpenCV_LIBS})
 
-file(GLOB src_testDbScanImage_files ${MODULE_SRC_ROOT}/testDbScanImage.cpp ${MODULE_SRC_ROOT}/dbscan.cpp)
+file(GLOB src_testDbScanImage_files ${MODULE_SRC_ROOT}/testDbScanImage.cpp ${MODULE_SRC_ROOT}/dbScan.cpp)
 add_executable(testDbScanImage ${src_testDbScanImage_files})
 target_link_libraries(testDbScanImage ${OpenCV_LIBS})
+
+file(GLOB src_testDbScanFastImage_files ${MODULE_SRC_ROOT}/testDbScanFastImage.cpp ${MODULE_SRC_ROOT}/dbScanFast.cpp)
+add_executable(testDbScanFastImage ${src_testDbScanFastImage_files})
+target_link_libraries(testDbScanFastImage ${OpenCV_LIBS})
 
 file(GLOB src_testKMeansImage_files ${MODULE_SRC_ROOT}/testKMeansImage.cpp ${MODULE_SRC_ROOT}/kMeans.cpp)
 add_executable(testKMeansImage ${src_testKMeansImage_files})
