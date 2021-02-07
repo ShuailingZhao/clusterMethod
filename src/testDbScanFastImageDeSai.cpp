@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <ctime>
-#include "dbScanFast.h"
+#include "dbScanFastDeSai.h"
 #include "opencv2/opencv.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/highgui/highgui.hpp"
@@ -153,7 +153,7 @@ void getParserInfo(std::string& fileName, int argc, char** argv)
 
 const char * usage =
 "\n"
-"./testDbScanFastImage -testImg=../data/39-1001150009181229150644600.png"
+"./testDbScanFastImageDeSai -testImg=../data/39-1001150009181229150644600.png"
 "\n";
 
 static void help()

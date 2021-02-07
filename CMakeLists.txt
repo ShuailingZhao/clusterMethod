@@ -41,3 +41,7 @@ target_link_libraries(testGMMImage ${OpenCV_LIBS})
 file(GLOB src_testMeanShiftImage_files ${MODULE_SRC_ROOT}/testMeanShiftImage.cpp ${MODULE_SRC_ROOT}/meanShift.cpp)
 add_executable(testMeanShiftImage ${src_testMeanShiftImage_files})
 target_link_libraries(testMeanShiftImage ${OpenCV_LIBS})
+
+file(GLOB src_testDbScanFastImageDeSai_files ${MODULE_SRC_ROOT}/testDbScanFastImageDeSai.cpp ${MODULE_SRC_ROOT}/dbScanFastDeSai.cpp)
+add_executable(testDbScanFastImageDeSai ${src_testDbScanFastImageDeSai_files})
+target_link_libraries(testDbScanFastImageDeSai ${OpenCV_LIBS})

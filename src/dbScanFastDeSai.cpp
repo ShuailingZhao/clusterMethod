@@ -113,17 +113,16 @@ int DBSCAN::expandCluster(PointWithC point, int clusterID)
 
 std::vector<int> DBSCAN::calculateCluster(PointWithC point)
 {
-    int step = point.step;
+    int index = 0;
+    std::vector<PointWithC>::iterator iter;
     std::vector<int> clusterIndex;
-    for(int j=std::max(0,point.y-m_epsilon); j<std::min(point.y+m_epsilon, mask.rows); j+=step)
+    for( iter = m_points.begin(); iter != m_points.end(); ++iter)
     {
-    	for(int i=std::max(0, point.x-m_epsilon); i<std::min(point.x+m_epsilon, mask.cols); i+=step)
-    	{
-    		if(mask.at<uchar>(j, i)>0)
-    		{
-    			clusterIndex.push_back(maskIndex.at<int>(j,i));
-    		}
-    	}
+        if ( calculateDistance(point, *iter) <= m_epsilon )
+        {
+            clusterIndex.push_back(index);
+        }
+        index++;
     }
     return clusterIndex;
 }
